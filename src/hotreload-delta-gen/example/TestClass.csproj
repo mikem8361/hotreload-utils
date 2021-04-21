@@ -4,12 +4,16 @@
         <OutputType>library</OutputType>
         <EnableDefaultItems>false</EnableDefaultItems>
     </PropertyGroup>
+    
     <ItemGroup>
-        <Compile Include="TestClass.cs"/>
+        <Compile Include="TestClass.cs" />
         <None Include="diffscript.json" />
+        <None Include="TestClass_v1.cs" />
+        <None Include="TestClass_v2.cs" />
     </ItemGroup>
 
     <!-- find the hot reload artifacts from this repo -->
+    <!--
     <PropertyGroup>
         <ToolConfiguration Condition="'$(ToolConfiguration)'==''">$(Configuration)</ToolConfiguration>
         <ToolTargetFramework Condition="'$(ToolTargetFramework)'==''">$(TargetFramework)</ToolTargetFramework>
@@ -18,22 +22,22 @@
         <HotReloadTaskPath>$(OutputPath)\..\..\Microsoft.DotNet.HotReload.Utils.DeltaGeneratorTask\$(ToolConfiguration)\$(ToolTargetFramework)\Microsoft.DotNet.HotReload.Utils.DeltaGeneratorTask.dll</HotReloadTaskPath>
     </PropertyGroup>
 
-    <UsingTask TaskName="DeltaGeneratorTask" AssemblyFile="$(HotReloadTaskPath)"/>
+    <ItemGroup>
+      <ProjectReference Include="..\src\hotreload-delta-gen.csproj" />
+    </ItemGroup>
+
+    <UsingTask TaskName="DeltaGeneratorTask" AssemblyFile="$(HotReloadTaskPath)" />
 
     <Target Name="RunDiff" AfterTargets="Build">
         <Message Importance="High" Text="Hi" />
         <ItemGroup>
           <ChildProps Include="Configuration=$(Configuration)" />
         </ItemGroup>
-        <DeltaGeneratorTask
-            ToolPath="$(HotReloadToolPath)"
-            ScriptPath="$(MSBuildProjectDirectory)\diffscript.json"
-            ProjectFile="$(MSBuildProjectFullPath)"
-            BuildProperties="@(ChildProps)"
-            OutputSummaryPath="$(OutputPath)\result.json" >
-            <Output TaskParameter="GeneratedDeltas" ItemName="GeneratedDeltas"/>
+        <DeltaGeneratorTask ToolPath="$(HotReloadToolPath)" ScriptPath="$(MSBuildProjectDirectory)\diffscript.json" ProjectFile="$(MSBuildProjectFullPath)" BuildProperties="@(ChildProps)" OutputSummaryPath="$(OutputPath)\result.json">
+            <Output TaskParameter="GeneratedDeltas" ItemName="GeneratedDeltas" />
         </DeltaGeneratorTask>
         <Message Importance="High" Text="Generated Deltas: @(GeneratedDeltas)" />
     </Target>
+    -->
 
 </Project>
