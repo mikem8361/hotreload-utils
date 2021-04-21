@@ -8,16 +8,13 @@ namespace RoslynILDiff
 {
     public class TestClass
     {
+        public int _field0 = 0;
+        public int _field1 = 1;
+        public int _field2 = 2;
+
         public int DoStuff (int x, int y)
         {
-            return 0 + x * x + y * y;
+            return x * y;
         }
-
-#if true
-        public class Nesty {
-            public static void P () { P (); }
-        }
-
-#endif
     }
 }

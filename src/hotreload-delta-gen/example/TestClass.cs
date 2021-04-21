@@ -8,6 +8,8 @@ namespace RoslynILDiff
 {
     public class TestClass
     {
+        public int _field0 = 0;
+        
         public int DoStuff (int x, int y)
         {
             return x * y;

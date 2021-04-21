@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using RoslynILDiff;
@@ -10,12 +11,126 @@ namespace Test
         static void Main(string[] args)
         {
             Console.WriteLine("ApplyUpdate 1");
-            Assembly assembly = typeof(TestClass).Assembly;
+
+            List<Action<Type[]>> beforeUpdates;
+            List<Action<Type[]>> afterUpdates;
+            (beforeUpdates, afterUpdates) = GetMetadataUpdateHandlerActions();
+
+            Type type = typeof(TestClass);
+            foreach (FieldInfo field in type.GetFields())
+            {
+                Console.WriteLine("{0}", field.Name);
+            }
+
+            foreach (Action<Type[]> handler in beforeUpdates)
+            {
+                Console.WriteLine($"Call before handler {handler.Method}");
+                handler(null);
+            }
+
             ReadOnlySpan<byte> metadataDelta = File.ReadAllBytes(@"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dmeta");
             ReadOnlySpan<byte> ilDelta = File.ReadAllBytes(@"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dil");
             ReadOnlySpan<byte> pdbDelta = File.ReadAllBytes(@"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dpdb");
+
+            Assembly assembly = type.Assembly;
             System.Reflection.Metadata.AssemblyExtensions.ApplyUpdate(assembly, metadataDelta, ilDelta, pdbDelta);
             Console.WriteLine("ApplyUpdate 1 finished");
+
+            foreach (Action<Type[]> handler in afterUpdates)
+            {
+                Console.WriteLine($"Call after handler {handler.Method}");
+                handler(null);
+            }
+
+            type = typeof(TestClass);
+            foreach (FieldInfo field in type.GetFields())
+            {
+                Console.WriteLine("{0}", field.Name);
+            }
+        }
+
+        private static (List<Action<Type[]>> BeforeUpdates, List<Action<Type[]>> AfterUpdates) GetMetadataUpdateHandlerActions()
+        {
+            var beforeUpdates = new List<Action<Type[]>>();
+            var afterUpdates = new List<Action<Type[]>>();
+
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                foreach (CustomAttributeData attr in assembly.GetCustomAttributesData())
+                {
+                    if (attr.AttributeType.FullName != "System.Reflection.Metadata.MetadataUpdateHandlerAttribute")
+                    {
+                        continue;
+                    }
+
+                    IList<CustomAttributeTypedArgument> ctorArgs = attr.ConstructorArguments;
+                    if (ctorArgs.Count != 1 ||
+                        ctorArgs[0].Value is not Type handlerType)
+                    {
+                        Console.WriteLine($"'{attr}' found with invalid arguments.");
+                        continue;
+                    }
+
+                    bool methodFound = false;
+
+                    if (GetUpdateMethod(handlerType, "BeforeUpdate") is MethodInfo beforeUpdate)
+                    {
+                        Console.WriteLine($"Before handler {handlerType} {beforeUpdate} found");
+                        beforeUpdates.Add(CreateAction(beforeUpdate));
+                        methodFound = true;
+                    }
+
+                    if (GetUpdateMethod(handlerType, "AfterUpdate") is MethodInfo afterUpdate)
+                    {
+                        Console.WriteLine($"After handler {handlerType} {afterUpdate} found");
+                        afterUpdates.Add(CreateAction(afterUpdate));
+                        methodFound = true;
+                    }
+
+                    if (!methodFound)
+                    {
+                        Console.WriteLine($"No BeforeUpdate or AfterUpdate method found on '{handlerType}'.");
+                    }
+
+                    static Action<Type[]> CreateAction(MethodInfo update)
+                    {
+                        Action<Type[]> action = update.CreateDelegate<Action<Type[]>>();
+                        return types =>
+                        {
+                            try
+                            {
+                                action(types);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Exception from '{action}': {ex}");
+                            }
+                        };
+                    }
+
+                    static MethodInfo GetUpdateMethod(Type handlerType, string name)
+                    {
+                        if (handlerType.GetMethod(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static, new[] { typeof(Type[]) }) is MethodInfo updateMethod &&
+                            updateMethod.ReturnType == typeof(void))
+                        {
+                            return updateMethod;
+                        }
+
+                        foreach (MethodInfo method in handlerType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance))
+                        {
+                            if (method.Name == name)
+                            {
+                                Console.WriteLine($"Type '{handlerType}' has method '{method}' that does not match the required signature.");
+                                break;
+                            }
+                        }
+
+                        return null;
+                    }
+                }
+            }
+
+            return (beforeUpdates, afterUpdates);
         }
     }
 }
