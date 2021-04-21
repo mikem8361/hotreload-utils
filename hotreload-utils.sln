@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNet.HotReload.Utils.DeltaGeneratorTask", "src\Microsoft.DotNet.HotReload.Utils.DeltaGeneratorTask\Microsoft.DotNet.HotReload.Utils.DeltaGeneratorTask.csproj", "{CD46A5D6-0460-42EC-9146-97CE0A1379F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNet.HotReload.Utils.Generator", "src\Microsoft.DotNet.HotReload.Utils.Generator\Microsoft.DotNet.HotReload.Utils.Generator.csproj", "{9B56DE34-8962-42D9-8E05-15F4D5DDA6B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\hotreload-delta-gen\test\Test.csproj", "{9E9EB3BD-E42D-482A-92CF-08FBFEBF9E1D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestClass", "src\hotreload-delta-gen\example\TestClass.csproj", "{4BFDD446-3F94-4D3D-BAE3-DD03560D1C46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hotreload-delta-gen", "src\hotreload-delta-gen\src\hotreload-delta-gen.csproj", "{B6D2F055-B71A-4D6D-B174-F2F385C28549}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD46A5D6-0460-42EC-9146-97CE0A1379F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD46A5D6-0460-42EC-9146-97CE0A1379F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD46A5D6-0460-42EC-9146-97CE0A1379F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD46A5D6-0460-42EC-9146-97CE0A1379F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B56DE34-8962-42D9-8E05-15F4D5DDA6B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B56DE34-8962-42D9-8E05-15F4D5DDA6B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B56DE34-8962-42D9-8E05-15F4D5DDA6B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B56DE34-8962-42D9-8E05-15F4D5DDA6B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E9EB3BD-E42D-482A-92CF-08FBFEBF9E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E9EB3BD-E42D-482A-92CF-08FBFEBF9E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E9EB3BD-E42D-482A-92CF-08FBFEBF9E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E9EB3BD-E42D-482A-92CF-08FBFEBF9E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFDD446-3F94-4D3D-BAE3-DD03560D1C46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFDD446-3F94-4D3D-BAE3-DD03560D1C46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFDD446-3F94-4D3D-BAE3-DD03560D1C46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFDD446-3F94-4D3D-BAE3-DD03560D1C46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D2F055-B71A-4D6D-B174-F2F385C28549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D2F055-B71A-4D6D-B174-F2F385C28549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D2F055-B71A-4D6D-B174-F2F385C28549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D2F055-B71A-4D6D-B174-F2F385C28549}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {28451C32-0A7F-4EE3-B78D-8CACB7084266}
+	EndGlobalSection
+EndGlobal

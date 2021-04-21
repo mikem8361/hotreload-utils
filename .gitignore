@@ -12,3 +12,4 @@ publish/
 *.dpdb
 /.vscode/
 /out/
+.vs/

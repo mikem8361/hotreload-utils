@@ -18,7 +18,7 @@ namespace Microsoft.DotNet.HotReload.Utils
         public string[]? BuildProperties {get; set;}
 
         protected override string ToolName {
-            get => "hotreload-delta-gen";
+            get => "hotreload-delta-gen.exe";
         }
 
         /// Each item is a full path of the generated dmeta file

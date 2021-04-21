@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <OutputType>library</OutputType>
@@ -13,7 +13,7 @@
     <PropertyGroup>
         <ToolConfiguration Condition="'$(ToolConfiguration)'==''">$(Configuration)</ToolConfiguration>
         <ToolTargetFramework Condition="'$(ToolTargetFramework)'==''">$(TargetFramework)</ToolTargetFramework>
-        <ToolRid Condition="'$(ToolRid)' == ''">osx-x64</ToolRid>
+        <ToolRid Condition="'$(ToolRid)' == ''">win-x64</ToolRid>
         <HotReloadToolPath>$(OutputPath)\..\..\hotreload-delta-gen\$(ToolConfiguration)\$(ToolTargetFramework)\$(ToolRid)\publish</HotReloadToolPath>
         <HotReloadTaskPath>$(OutputPath)\..\..\Microsoft.DotNet.HotReload.Utils.DeltaGeneratorTask\$(ToolConfiguration)\$(ToolTargetFramework)\Microsoft.DotNet.HotReload.Utils.DeltaGeneratorTask.dll</HotReloadTaskPath>
     </PropertyGroup>
