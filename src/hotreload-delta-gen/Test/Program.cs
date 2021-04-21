@@ -8,45 +8,50 @@ namespace Test
 {
     class Program
     {
+        private static List<Action<Type[]>> _beforeUpdates;
+        private static List<Action<Type[]>> _afterUpdates;
+
         static void Main(string[] args)
         {
-            Console.WriteLine("ApplyUpdate 1");
-
-            List<Action<Type[]>> beforeUpdates;
-            List<Action<Type[]>> afterUpdates;
-            (beforeUpdates, afterUpdates) = GetMetadataUpdateHandlerActions();
+            (_beforeUpdates, _afterUpdates) = GetMetadataUpdateHandlerActions();
 
             Type type = typeof(TestClass);
-            foreach (FieldInfo field in type.GetFields())
-            {
-                Console.WriteLine("{0}", field.Name);
-            }
+            Array.ForEach(type.GetFields(), (field) => Console.WriteLine($"{field.Name}"));
+            Array.ForEach(type.GetMethods(), (method) => Console.WriteLine($"{method.Name}"));
+            Console.WriteLine();
 
-            foreach (Action<Type[]> handler in beforeUpdates)
-            {
-                Console.WriteLine($"Call before handler {handler.Method}");
-                handler(null);
-            }
+            Console.WriteLine("ApplyUpdate 1");
+            ApplyUpdate(
+                type,
+                @"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dmeta",
+                @"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dil",
+                @"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dpdb");
 
-            ReadOnlySpan<byte> metadataDelta = File.ReadAllBytes(@"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dmeta");
-            ReadOnlySpan<byte> ilDelta = File.ReadAllBytes(@"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dil");
-            ReadOnlySpan<byte> pdbDelta = File.ReadAllBytes(@"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.1.dpdb");
+            Console.WriteLine("ApplyUpdate 2");
+            ApplyUpdate(
+                type,
+                @"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.2.dmeta",
+                @"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.2.dil",
+                @"C:\ssd\hotreload-utils\artifacts\bin\TestClass\Debug\net6.0\TestClass.dll.2.dpdb");
+        }
 
+        private static void ApplyUpdate(Type type, string metadataDeltaFile, string ilDeltaFile, string pdbDeltaFile)
+        {
             Assembly assembly = type.Assembly;
+
+            _beforeUpdates.ForEach((handler) => handler(null));
+
+            ReadOnlySpan<byte> metadataDelta = File.ReadAllBytes(metadataDeltaFile);
+            ReadOnlySpan<byte> ilDelta = File.ReadAllBytes(ilDeltaFile);
+            ReadOnlySpan<byte> pdbDelta = File.ReadAllBytes(pdbDeltaFile);
             System.Reflection.Metadata.AssemblyExtensions.ApplyUpdate(assembly, metadataDelta, ilDelta, pdbDelta);
-            Console.WriteLine("ApplyUpdate 1 finished");
+            Console.WriteLine("ApplyUpdate finished");
 
-            foreach (Action<Type[]> handler in afterUpdates)
-            {
-                Console.WriteLine($"Call after handler {handler.Method}");
-                handler(null);
-            }
+            _afterUpdates.ForEach((handler) => handler(null));
 
-            type = typeof(TestClass);
-            foreach (FieldInfo field in type.GetFields())
-            {
-                Console.WriteLine("{0}", field.Name);
-            }
+            Array.ForEach(type.GetFields(), (field) => Console.WriteLine($"{field.Name}"));
+            Array.ForEach(type.GetMethods(), (method) => Console.WriteLine($"{method.Name}"));
+            Console.WriteLine();
         }
 
         private static (List<Action<Type[]>> BeforeUpdates, List<Action<Type[]>> AfterUpdates) GetMetadataUpdateHandlerActions()

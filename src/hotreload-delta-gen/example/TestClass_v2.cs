@@ -14,7 +14,12 @@ namespace RoslynILDiff
 
         public int DoStuff (int x, int y)
         {
-            return x * y;
+            return 0 + x * x + y * y;
+        }
+
+        public int FooDog (int x, int y)
+        {
+            return DoStuff(x, y);
         }
     }
 }
