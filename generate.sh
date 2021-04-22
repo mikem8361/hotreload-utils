@@ -1,0 +1,1 @@
+./dotnet.sh artifacts/bin/hotreload-delta-gen/Debug/net6.0/hotreload-delta-gen.dll -msbuild:src/hotreload-delta-gen/example/TestClass.csproj -p:Configuration=Debug -script:src/hotreload-delta-gen/example/diffscript.json -outputSummary:artifacts/summary.json

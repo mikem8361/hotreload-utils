@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNet.HotReload.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.DotNet.HotReload.Utils.Generator", "src\Microsoft.DotNet.HotReload.Utils.Generator\Microsoft.DotNet.HotReload.Utils.Generator.csproj", "{9B56DE34-8962-42D9-8E05-15F4D5DDA6B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\hotreload-delta-gen\test\Test.csproj", "{9E9EB3BD-E42D-482A-92CF-08FBFEBF9E1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "src\hotreload-delta-gen\Test\Test.csproj", "{9E9EB3BD-E42D-482A-92CF-08FBFEBF9E1D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestClass", "src\hotreload-delta-gen\example\TestClass.csproj", "{4BFDD446-3F94-4D3D-BAE3-DD03560D1C46}"
 EndProject
