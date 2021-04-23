@@ -15,9 +15,12 @@ namespace Test
         {
             (_beforeUpdates, _afterUpdates) = GetMetadataUpdateHandlerActions();
 
+            Console.WriteLine("Press key to continue");
+            Console.ReadLine();
+
             Type type = typeof(TestClass);
-            Array.ForEach(type.GetFields(), (field) => Console.WriteLine($"{field.Name}"));
-            Array.ForEach(type.GetMethods(), (method) => Console.WriteLine($"{method.Name}"));
+            Array.ForEach(type.GetFields(), (field) => Console.WriteLine($"{field.Name} {field.MetadataToken:X8}"));
+            Array.ForEach(type.GetMethods(), (method) => Console.WriteLine($"{method.Name} {method.MetadataToken:X8}"));
             Console.WriteLine();
 
             Console.WriteLine("ApplyUpdate 1");
@@ -49,8 +52,8 @@ namespace Test
 
             _afterUpdates.ForEach((handler) => handler(null));
 
-            Array.ForEach(type.GetFields(), (field) => Console.WriteLine($"{field.Name}"));
-            Array.ForEach(type.GetMethods(), (method) => Console.WriteLine($"{method.Name}"));
+            Array.ForEach(type.GetFields(), (field) => Console.WriteLine($"{field.Name} {field.MetadataToken:X8}"));
+            Array.ForEach(type.GetMethods(), (method) => Console.WriteLine($"{method.Name} {method.MetadataToken:X8}"));
             Console.WriteLine();
         }
 
